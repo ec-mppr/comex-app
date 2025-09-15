@@ -17,7 +17,7 @@ public class CategoriaDao {
     }
 
     public List<Categoria> listaTodos() {
-        String sql = "select * from categorias";
+        String sql = "select * from categoria";
 
         try (PreparedStatement comando = conexao.prepareStatement(sql)) {
             ResultSet resultSet = comando.executeQuery();
@@ -46,7 +46,7 @@ public class CategoriaDao {
         String sql = "insert into categoria (nome) values (?)";
 
         try (PreparedStatement comando = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            comando.setString(5, categoria.getNome());
+            comando.setString(1, categoria.getNome());
 
             comando.execute();
 
