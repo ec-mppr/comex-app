@@ -1,5 +1,8 @@
 package br.com.alura.comex;
 
+import br.com.alura.comex.dao.ClienteDao;
+import br.com.alura.comex.model.Cliente;
+
 import java.util.List;
 
 public class TestaCadastroDeCliente {

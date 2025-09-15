@@ -2,6 +2,9 @@ package br.com.alura.comex;
 
 
 
+import br.com.alura.comex.dao.ClienteDao;
+import br.com.alura.comex.model.Cliente;
+
 import java.sql.SQLException;
 import java.util.List;
 
