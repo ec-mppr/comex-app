@@ -1,9 +1,23 @@
 package br.com.alura.comex.model;
 
+import br.com.alura.comex.controller.CategoriaRequest;
+
 public class Categoria {
 
     private Long id;
     private String nome;
+
+    public Categoria() {
+    }
+
+    public Categoria(Long id, String nome) {
+        this.id = id;
+        this.nome = nome;
+    }
+
+    public static Categoria fromRecord(CategoriaRequest record) {
+        return new Categoria(record.id(), record.nome());
+    }
 
     public Long getId() {
         return id;
