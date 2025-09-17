@@ -1,18 +1,42 @@
 package br.com.alura.comex.model;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import br.com.alura.comex.controller.ProdutoRequest;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 
+@Entity
 public class Produto {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String nome;
     private String descricao;
-
+    private Integer quantidade;
     private double preco;
-    private List<Categoria> categorias = new ArrayList<>();
 
+    @OneToOne
+    private Categoria categoria;
+
+    public Produto() {
+    }
+
+    public Produto(String nome, double preco, String descricao, Integer quantidade, Categoria categoria) {
+        this.nome = nome;
+        this.preco = preco;
+        this.descricao = descricao;
+        this.quantidade = quantidade;
+        this.categoria = categoria;
+    }
+
+    public static Produto fromRecord(ProdutoRequest record, Categoria categoria) {
+        // Categoria categoria = new Categoria(record.categoria(), "Plantas",
+        // CategoriaStatus.ATIVA);
+        return new Produto(record.nome(), record.preco(), record.descricao(), record.quantidade(), categoria);
+    }
 
     public Long getId() {
         return id;
@@ -46,19 +70,20 @@ public class Produto {
         this.preco = preco;
     }
 
-    public List<Categoria> getCategorias() {
-        return Collections.unmodifiableList(categorias);
+    public Integer getQuantidade() {
+        return quantidade;
     }
 
-    public void adicionaCategoria(Categoria categoria) {
-        // verifica se a categoria já foi adicionada com base no id
-        for (Categoria categoriaDaLista : categorias) {
-            if (categoriaDaLista.getId().equals(categoria.getId())) {
-                return;
-            }
-        }
+    public void setQuantidade(Integer quantidade) {
+        this.quantidade = quantidade;
+    }
 
-        this.categorias.add(categoria);
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
     }
 
     @Override
@@ -68,7 +93,7 @@ public class Produto {
                 ", nome='" + nome + '\'' +
                 ", descricao='" + descricao + '\'' +
                 ", preco=" + preco +
-                ", categorias=" + categorias +
+                ", categoria=" + categoria +
                 '}';
     }
 }
