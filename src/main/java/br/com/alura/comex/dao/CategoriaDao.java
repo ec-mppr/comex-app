@@ -8,6 +8,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated
 public class CategoriaDao {
 
     private Connection conexao;

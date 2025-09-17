@@ -63,10 +63,10 @@ public class ProdutoController {
       categoria = categoriaBuscada.get();
       Produto produto = Produto.fromRecord(request, categoria);
       produtoRepository.save(produto);
-      return new ResponseEntity(produto, HttpStatus.OK);
+      return new ResponseEntity<>(produto, HttpStatus.OK);
     } else {
       ErroResponse response = new ErroResponse("Falha no cadastro: categoria do produto não encontrada");
-      return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
   }
 
