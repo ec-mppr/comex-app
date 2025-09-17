@@ -15,12 +15,7 @@ public class TestaConsultaDeProduto {
         for (Produto produto : produtos) {
             System.out.println("ID: " + produto.getId());
             System.out.println("NOME: " + produto.getNome());
-
-            System.out.println("CATEGORIAS:");
-            for (Categoria categoria : produto.getCategorias()) {
-                System.out.println("  " + categoria.getId() + " => " + categoria.getNome());
-            }
-
+            System.out.println("CATEGORIA:" + produto.getCategoria().getNome());
             System.out.println("========================================");
             System.out.println();
         }
