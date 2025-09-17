@@ -22,6 +22,7 @@ import br.com.alura.comex.repository.ProdutoRepository;
 import io.micrometer.core.ipc.http.HttpSender.Response;
 import jakarta.validation.Valid;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -67,6 +68,29 @@ public class ProdutoController {
     } else {
       ErroResponse response = new ErroResponse("Falha no cadastro: categoria do produto não encontrada");
       return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @GetMapping("/busca")
+  public ResponseEntity<Object> busca(@RequestBody Long id) {
+    Optional<Produto> produtoBuscado = produtoRepository.findById(id);
+    if (produtoBuscado.isPresent()) {
+      Produto produto = produtoBuscado.get();
+      return new ResponseEntity<>(produto, HttpStatus.OK);
+    } else {
+      return new ResponseEntity<Object>(new ErroResponse("Produto não encontrado"), HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @DeleteMapping("/deleta")
+  public ResponseEntity<Object> deleta(@RequestBody Long id) {
+    Optional<Produto> produtoBuscado = produtoRepository.findById(id);
+    if (produtoBuscado.isPresent()) {
+      String nomeProduto = produtoBuscado.get().getNome();
+      produtoRepository.deleteById(id);
+      return new ResponseEntity<>("Produto " + nomeProduto + " deletado", HttpStatus.OK);
+    } else {
+      return new ResponseEntity<Object>(new ErroResponse("Produto não encontrado"), HttpStatus.BAD_REQUEST);
     }
   }
 

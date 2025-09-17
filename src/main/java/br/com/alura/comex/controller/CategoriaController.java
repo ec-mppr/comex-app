@@ -67,7 +67,7 @@ public class CategoriaController {
     }
 
     @PostMapping("/atualiza")
-    public ResponseEntity<Object> atualiza(@RequestBody CategoriaUpdateRequest request) {
+    public ResponseEntity<Object> atualiza(@RequestBody @Valid CategoriaUpdateRequest request) {
         Optional<Categoria> categoriaBuscada = categoriaRepository.findById(request.id());
         if (categoriaBuscada.isPresent()) {
             Categoria categoria = categoriaBuscada.get();
