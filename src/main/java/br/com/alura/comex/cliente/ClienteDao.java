@@ -10,6 +10,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated
 public class ClienteDao {
 
     private Connection conexao;
@@ -55,11 +56,11 @@ public class ClienteDao {
 
     public void cadastra(Cliente cliente) {
         String sql = """
-                     insert into cliente 
-                        (nome, email, tel, cpf, logradouro, bairro, cidade, uf, cep) 
-                     values
-                        (?, ?, ?, ?, ?, ?, ?, ?, ?)
-                     """;
+                insert into cliente
+                   (nome, email, tel, cpf, logradouro, bairro, cidade, uf, cep)
+                values
+                   (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """;
 
         try (PreparedStatement comando = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             comando.setString(1, cliente.getNome());
@@ -94,18 +95,18 @@ public class ClienteDao {
 
     public void atualiza(Cliente cliente) {
         String sql = """
-                     update cliente set 
-                        nome = ?, 
-                        email = ?, 
-                        telefone = ?, 
-                        cpf = ?, 
-                        logradouro = ?, 
-                        bairro = ?, 
-                        cidade = ?, 
-                        uf = ?, 
-                        cep = ? 
-                     where id = ?
-                     """;
+                update cliente set
+                   nome = ?,
+                   email = ?,
+                   telefone = ?,
+                   cpf = ?,
+                   logradouro = ?,
+                   bairro = ?,
+                   cidade = ?,
+                   uf = ?,
+                   cep = ?
+                where id = ?
+                """;
 
         try (PreparedStatement comando = conexao.prepareStatement(sql)) {
             comando.setString(1, cliente.getNome());

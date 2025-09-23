@@ -1,7 +1,16 @@
 package br.com.alura.comex.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
+
+@Entity
 public class Cliente {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String cpf;
@@ -13,6 +22,25 @@ public class Cliente {
     private String cidade;
     private String estado;
     private String cep;
+
+    @OneToOne
+    private Usuario usuario;
+
+    public Cliente() {
+    }
+
+    public Cliente(String cpf, String nome, String email, String telefone, String logradouro, String bairro,
+            String cidade, String estado, String cep) {
+        this.cpf = cpf;
+        this.nome = nome;
+        this.email = email;
+        this.telefone = telefone;
+        this.logradouro = logradouro;
+        this.bairro = bairro;
+        this.cidade = cidade;
+        this.estado = estado;
+        this.cep = cep;
+    }
 
     public Long getId() {
         return id;

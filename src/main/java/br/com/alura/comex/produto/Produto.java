@@ -33,8 +33,6 @@ public class Produto {
     }
 
     public static Produto fromRecord(ProdutoRequest record, Categoria categoria) {
-        // Categoria categoria = new Categoria(record.categoria(), "Plantas",
-        // CategoriaStatus.ATIVA);
         return new Produto(record.nome(), record.preco(), record.descricao(), record.quantidade(), categoria);
     }
 
