@@ -43,6 +43,11 @@ public class Cliente {
         this.cep = cep;
     }
 
+    public static Cliente fromRecord(ClienteDTO record) {
+        return new Cliente(record.cpf(), record.nome(), record.email(), record.telefone(), record.logradouro(),
+                record.bairro(), record.cidade(), record.estado(), record.cep());
+    }
+
     public Long getId() {
         return id;
     }
