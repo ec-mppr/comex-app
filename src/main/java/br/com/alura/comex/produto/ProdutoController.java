@@ -1,4 +1,4 @@
-package br.com.alura.comex.controller;
+package br.com.alura.comex.produto;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,10 +15,9 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.alura.comex.model.Categoria;
-import br.com.alura.comex.model.Produto;
-import br.com.alura.comex.repository.CategoriaRepository;
-import br.com.alura.comex.repository.ProdutoRepository;
+import br.com.alura.comex.categoria.Categoria;
+import br.com.alura.comex.categoria.CategoriaRepository;
+import br.com.alura.comex.shared.ErroResponse;
 import io.micrometer.core.ipc.http.HttpSender.Response;
 import jakarta.validation.Valid;
 
@@ -44,7 +43,7 @@ public class ProdutoController {
   }
 
   @PostMapping("/cadastro")
-  public ResponseEntity<Object> cadastro(@RequestBody @Valid ProdutoRequest request, BindingResult result) {
+  public ResponseEntity<Object> cadastro(@RequestBody @Valid ProdutoDTO request, BindingResult result) {
     Categoria categoria;
     System.out.println(result);
     if (result.hasFieldErrors()) {

@@ -1,4 +1,4 @@
-package br.com.alura.comex.controller;
+package br.com.alura.comex.categoria;
 
 import jakarta.validation.Valid;
 
@@ -17,9 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.alura.comex.dao.CategoriaDao;
-import br.com.alura.comex.model.Categoria;
-import br.com.alura.comex.repository.CategoriaRepository;
+import br.com.alura.comex.shared.ErroResponse;
+
 import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
@@ -36,7 +35,7 @@ public class CategoriaController {
     }
 
     @PostMapping("/cadastro")
-    public ResponseEntity<String> cadastro(@RequestBody @Valid CategoriaRequest request) {
+    public ResponseEntity<String> cadastro(@RequestBody @Valid CategoriaDTO request) {
         Categoria categoria = Categoria.fromRecord(request);
         categoriaRepository.save(categoria);
         return new ResponseEntity<String>(

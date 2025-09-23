@@ -1,9 +1,8 @@
-package br.com.alura.comex.model;
+package br.com.alura.comex.categoria;
 
 import org.hibernate.validator.constraints.Length;
 import org.springframework.beans.factory.annotation.Value;
 
-import br.com.alura.comex.controller.CategoriaRequest;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -31,7 +30,7 @@ public class Categoria {
         this.status = status;
     }
 
-    public static Categoria fromRecord(CategoriaRequest record) {
+    public static Categoria fromRecord(CategoriaDTO record) {
         // enviando ID null para contornar o erro 'Row was updated or deleted by another
         // transaction (or unsaved-value mapping was incorrect)'
         return new Categoria(null, record.nome(), CategoriaStatus.ATIVA);

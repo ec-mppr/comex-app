@@ -1,8 +1,7 @@
-package br.com.alura.comex.dao;
+package br.com.alura.comex.cliente;
 
 import br.com.alura.comex.db.ConnectionFactory;
 import br.com.alura.comex.db.DatabaseUtils;
-import br.com.alura.comex.model.Cliente;
 import br.com.alura.comex.db.ConnectionFactory;
 import br.com.alura.comex.db.DatabaseUtils;
 

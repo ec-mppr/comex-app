@@ -1,5 +1,6 @@
-package br.com.alura.comex.model;
+package br.com.alura.comex.cliente;
 
+import br.com.alura.comex.usuario.Usuario;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

@@ -1,8 +1,7 @@
-package br.com.alura.comex.dao;
+package br.com.alura.comex.categoria;
 
 import br.com.alura.comex.db.ConnectionFactory;
 import br.com.alura.comex.db.DatabaseUtils;
-import br.com.alura.comex.model.Categoria;
 
 import java.sql.*;
 import java.util.ArrayList;

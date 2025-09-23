@@ -1,6 +1,6 @@
-package br.com.alura.comex.model;
+package br.com.alura.comex.produto;
 
-import br.com.alura.comex.controller.ProdutoRequest;
+import br.com.alura.comex.categoria.Categoria;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -32,7 +32,7 @@ public class Produto {
         this.categoria = categoria;
     }
 
-    public static Produto fromRecord(ProdutoRequest record, Categoria categoria) {
+    public static Produto fromRecord(ProdutoDTO record, Categoria categoria) {
         return new Produto(record.nome(), record.preco(), record.descricao(), record.quantidade(), categoria);
     }
 
