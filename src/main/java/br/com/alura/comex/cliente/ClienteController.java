@@ -4,9 +4,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.alura.comex.usuario.Usuario;
+import br.com.alura.comex.usuario.UsuarioRepository;
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +23,12 @@ public class ClienteController {
   @Autowired
   ClienteRepository clienteRepository;
 
+  @Autowired
+  UsuarioRepository usuarioRepository;
+
+  @Autowired
+  PasswordEncoder passwordEncoder;
+
   @GetMapping("/lista")
   public ResponseEntity<List<Cliente>> lista() {
     List<Cliente> listaClientes = clienteRepository.findAll();
@@ -29,6 +38,9 @@ public class ClienteController {
   @PostMapping("/cadastro")
   public ResponseEntity<Cliente> cadastro(@RequestBody @Valid ClienteDTO request) {
     Cliente cliente = Cliente.fromRecord(request);
+    Usuario usuario = new Usuario(null, request.email(), passwordEncoder.encode("senha123"));
+    usuarioRepository.save(usuario);
+    cliente.setUsuario(usuario);
     clienteRepository.save(cliente);
     return ResponseEntity.ok().body(cliente);
   }

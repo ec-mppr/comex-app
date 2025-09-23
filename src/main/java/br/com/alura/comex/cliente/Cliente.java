@@ -128,6 +128,14 @@ public class Cliente {
         this.cep = cep;
     }
 
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
     @Override
     public String toString() {
         return "Cliente{" +
