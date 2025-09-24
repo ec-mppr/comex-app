@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 
 import br.com.alura.comex.usuario.Usuario;
 
@@ -24,6 +25,19 @@ public class TokenService {
           .sign(algoritmo);
     } catch (JWTCreationException exception) {
       throw new RuntimeException("Erro ao gerar token JWT: ", exception);
+    }
+  }
+
+  public String getSubject(String tokenJWT) {
+    try {
+      var algoritmo = Algorithm.HMAC256("12345678");
+      return JWT.require(algoritmo)
+          .withIssuer("Comex App")
+          .build()
+          .verify(tokenJWT)
+          .getSubject();
+    } catch (JWTVerificationException exception) {
+      throw new RuntimeException("Token JWT inválido ou expirado!");
     }
   }
 
