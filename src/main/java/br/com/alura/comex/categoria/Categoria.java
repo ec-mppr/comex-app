@@ -7,6 +7,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.Valid;
 
 @Entity
 public class Categoria {
@@ -31,6 +32,14 @@ public class Categoria {
         // enviando ID null para contornar o erro 'Row was updated or deleted by another
         // transaction (or unsaved-value mapping was incorrect)'
         return new Categoria(null, record.nome(), CategoriaStatus.ATIVA);
+    }
+
+    public void update(CategoriaUpdateRequest request) {
+        this.nome = request.nome();
+    }
+
+    public void delete() {
+        this.status = CategoriaStatus.DESATIVADA;
     }
 
     public Long getId() {

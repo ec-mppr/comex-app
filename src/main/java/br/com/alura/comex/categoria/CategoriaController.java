@@ -4,16 +4,21 @@ import jakarta.validation.Valid;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("/api/categoria")
@@ -23,52 +28,44 @@ public class CategoriaController {
     private CategoriaRepository categoriaRepository;
 
     @GetMapping("/lista")
-    public ResponseEntity<List<Categoria>> lista() {
+    public ResponseEntity<List<CategoriaDTO>> lista() {
         List<Categoria> listaCategorias = categoriaRepository.findAll();
-        return new ResponseEntity<List<Categoria>>(listaCategorias, HttpStatus.OK);
+        List<CategoriaDTO> listaCategoriaDTOs = listaCategorias.stream().map(CategoriaDTO::new).toList();
+        return ResponseEntity.ok(listaCategoriaDTOs);
     }
 
     @PostMapping("/cadastro")
-    public ResponseEntity<String> cadastro(@RequestBody @Valid CategoriaDTO request) {
+    public ResponseEntity<CategoriaDTO> cadastro(@RequestBody @Valid CategoriaDTO request,
+            UriComponentsBuilder uriBuilder) {
         Categoria categoria = Categoria.fromRecord(request);
         categoriaRepository.save(categoria);
-        return new ResponseEntity<String>(
-                "Nova categoria cadastrada: " + categoria.getNome(), HttpStatus.OK);
+
+        var uri = uriBuilder.path("/categoria/{id}").buildAndExpand(categoria.getId()).toUri();
+
+        return ResponseEntity.created(uri).body(new CategoriaDTO(categoria));
     }
 
-    @GetMapping("/busca")
-    public ResponseEntity<Object> busca(@RequestBody Long id) {
-        Optional<Categoria> categoriaBuscada = categoriaRepository.findById(id);
-        if (categoriaBuscada.isPresent()) {
-            Categoria categoria = categoriaBuscada.get();
-            return new ResponseEntity<>(categoria, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<Object>("Categoria não encontrada", HttpStatus.BAD_REQUEST);
-        }
+    @GetMapping("/busca/{id}")
+    public ResponseEntity<CategoriaDTO> busca(@PathVariable Long id) {
+        Categoria categoria = categoriaRepository.getReferenceById(id);
+        CategoriaDTO categoriaDTO = new CategoriaDTO(categoria);
+        return ResponseEntity.ok(categoriaDTO);
     }
 
-    @DeleteMapping("/deleta")
-    public ResponseEntity<Object> deleta(@RequestBody Long id) {
-        Optional<Categoria> categoriaBuscada = categoriaRepository.findById(id);
-        if (categoriaBuscada.isPresent()) {
-            String nomeCategoria = categoriaBuscada.get().getNome();
-            categoriaRepository.deleteById(id);
-            return new ResponseEntity<>("Categoria " + nomeCategoria + " deletada", HttpStatus.OK);
-        } else {
-            return new ResponseEntity<Object>("Categoria não encontrada", HttpStatus.BAD_REQUEST);
-        }
+    @DeleteMapping("/deleta/{id}")
+    @Transactional
+    public ResponseEntity<Void> deleta(@PathVariable Long id) {
+        var categoria = categoriaRepository.getReferenceById(id);
+        categoria.delete();
+        return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/atualiza")
-    public ResponseEntity<Object> atualiza(@RequestBody @Valid CategoriaUpdateRequest request) {
-        Optional<Categoria> categoriaBuscada = categoriaRepository.findById(request.id());
-        if (categoriaBuscada.isPresent()) {
-            Categoria categoria = categoriaBuscada.get();
-            categoriaRepository.save(categoria);
-            return new ResponseEntity<>("Categoria " + categoria.getNome() + " atualizada", HttpStatus.OK);
-        } else {
-            return new ResponseEntity<Object>("Categoria não encontrada", HttpStatus.BAD_REQUEST);
-        }
+    @PutMapping("/atualiza")
+    @Transactional
+    public ResponseEntity<CategoriaDTO> atualiza(@RequestBody @Valid CategoriaUpdateRequest request) {
+        var categoria = categoriaRepository.getReferenceById(request.id());
+        categoria.update(request);
+        return ResponseEntity.ok(new CategoriaDTO(categoria));
     }
 
 }
